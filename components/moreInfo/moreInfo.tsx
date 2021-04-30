@@ -112,12 +112,22 @@ function MoreInfo() {
                   required
                 />
               </label>
-              <button
-                type="submit"
-                className="mt-5 w-full transition duration-200 ease-in bg-green-400 hover:bg-green-500 text-white font-face font-bold p-2 rounded shadow-lg"
-              >
-                Continue <span>&rarr;</span>
-              </button>
+              {name && email ? (
+                <button
+                  type="submit"
+                  className="mt-5 w-full transition duration-200 ease-in bg-green-400 hover:bg-green-500 text-white font-face font-bold p-2 rounded shadow-lg"
+                >
+                  Continue <span>&rarr;</span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="mt-5 w-full transition duration-200 ease-in bg-green-400 hover:bg-green-500 text-white font-face font-bold p-2 rounded shadow-lg"
+                  disabled
+                >
+                  Continue <span>&rarr;</span>
+                </button>
+              )}
             </form>
           </div>
         </div>
