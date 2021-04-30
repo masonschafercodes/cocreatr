@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const { email } = req.body;
 
-  const users = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email: email,
     },
@@ -13,5 +13,9 @@ export default async function handle(req, res) {
       isNewUser: true,
     },
   });
-  res.send(users);
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(200).json({ isNewUser: true });
+  }
 }

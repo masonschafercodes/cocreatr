@@ -1,8 +1,8 @@
 import Header from "../components/header/Header";
-import MoreInfo from "../components/moreInfo/moreInfo";
+import SubHeader from "../components/subHeader/SubHeader";
 import { useUser } from "../lib/hooks";
 
-function Profile() {
+function Dashboard() {
   const user = useUser({ redirectTo: "/" });
 
   return (
@@ -11,7 +11,7 @@ function Profile() {
         <div>
           <Header user={user} />
           <div>
-            <MoreInfo />
+            <SubHeader />
           </div>
         </div>
       )}
@@ -19,4 +19,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Dashboard;
