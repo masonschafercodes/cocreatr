@@ -14,7 +14,9 @@ const Header = ({ user }) => {
         Co<span className="text-green-500">Creatr</span>
       </h1>
       <div className="ml-auto">
-        <span className="mr-2 font-face text-green-500">{user.email}</span>
+        <span className="mr-2 font-face text-green-500">
+          {user ? user.email : null}
+        </span>
         <button
           onClick={handleLogout}
           className="font-face tracking-wide t no-underline hover:underline transition duration-200 ease-in text-gray-600 hover:text-red-400"

@@ -5,6 +5,11 @@ import { useUser } from "../../lib/hooks";
 function MoreInfo() {
   const user = useUser({ redirectTo: "/" });
 
+  localStorage.setItem(
+    "user",
+    JSON.stringify({ user: user })
+  );
+
   const router = useRouter();
 
   const [name, setName] = useState("");

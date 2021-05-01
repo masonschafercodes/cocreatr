@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import CreateTask from "../../components/task/CreateTask";
 import Task from "../../components/task/Task";
 import Header from "../../components/header/Header";
-import { useUser } from "../../lib/hooks";
 import SubHeader from "../../components/subHeader/SubHeader";
 
 import getLocalWid from "../../lib/getLocalWid";
+import getLocalUser from "../../lib/getLocalUser";
 
 const Workspace = () => {
-  const user = useUser({ redirectTo: "/" });
+  const user = getLocalUser();
   const [workspaceTasks, setWorkspaceTasks] = useState([]);
 
   interface widType {
@@ -35,12 +34,12 @@ const Workspace = () => {
   return (
     <div>
       {/* TODO: FIX THIS */}
-      <Header user />
+      <Header user={user} />
       <SubHeader wid={wid} />
       <div className="mx-14 mt-10">
         <h1 className="font-face text-2xl">Tasks: </h1>
       </div>
-      <div className="flex flex-row flex-wrap w-full mx-10">
+      <div className="flex flex-row flex-wrap w-full px-10">
         {workspaceTasks
           ? workspaceTasks.map((task) => (
               <div key={task.name} className="px-2 my-2">
