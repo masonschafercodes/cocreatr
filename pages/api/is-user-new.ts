@@ -1,4 +1,6 @@
-import prisma from "../../lib/prisma";
+import DBClient from "../../lib/prisma";
+
+const prisma = DBClient.getInstance().prisma;
 
 export default async function handle(req, res) {
   const { email } = req.body;

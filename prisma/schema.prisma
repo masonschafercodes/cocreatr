@@ -11,21 +11,36 @@ generator client {
 }
 
 model Workspace {
-  id        Int     @default(autoincrement()) @id
-  title String
+  id          Int      @id @default(autoincrement())
+  title       String
   description String?
-  active Boolean @default(false)
-  creator    User?   @relation(fields: [creatorId], references: [id])
-  creatorId  Int?
+  active      Boolean  @default(false)
+  workspaceId String   @unique @default(uuid())
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  creator     User?    @relation(fields: [creatorId], references: [id])
+  tasks       Task[]
+  creatorId   Int?
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  name        String
+  taskDesc    String
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @updatedAt @map(name: "updated_at")
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId Int?
 }
 
 model User {
-  id            Int       @default(autoincrement()) @id
-  name          String?
-  email         String?   @unique
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  workspaces         Workspace[]
-  isNewUser Boolean @default(true)
+  id         Int         @id @default(autoincrement())
+  name       String?
+  email      String?     @unique
+  createdAt  DateTime    @default(now()) @map(name: "created_at")
+  updatedAt  DateTime    @updatedAt @map(name: "updated_at")
+  workspaces Workspace[]
+  isNewUser  Boolean     @default(true)
+
   @@map(name: "users")
 }
