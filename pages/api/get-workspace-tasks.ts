@@ -4,7 +4,6 @@ const prisma = DBClient.getInstance().prisma;
 
 export default async function handle(req, res) {
   const { wid } = req.body;
-  console.error(wid);
 
   const tasks = await prisma.workspace.findUnique({
     where: {
@@ -16,6 +15,9 @@ export default async function handle(req, res) {
           name: true,
           taskDesc: true,
           createdAt: true,
+        },
+        orderBy: {
+          createdAt: "desc",
         },
       },
     },

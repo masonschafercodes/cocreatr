@@ -1,20 +1,20 @@
-const SubHeader = () => {
+import CreateTask from "../task/CreateTask";
+
+const SubHeader = ({ wid }) => {
   return (
     <div className="flex items-center justify-start  bg-gray-100 rounded p-4 mx-16 shadow-lg">
       <div className="mx-4">
-        <button className="bg-gray-200 hover:bg-gray-300 p-3 rounded font-face shadow-md">
+        <button className="px-3 py-2 bg-green-400 hover:bg-green-500 my-3 font-face text-white rounded shadow-md">
           Add New Event
         </button>
       </div>
       <div className="mx-4">
-        <button className="bg-gray-200 hover:bg-gray-300 p-3 rounded font-face shadow-md">
+        <button className="px-3 py-2 bg-green-400 hover:bg-green-500 my-3 font-face text-white rounded shadow-md">
           Add New Note
         </button>
       </div>
       <div className="mx-4">
-        <button className="bg-gray-200 hover:bg-gray-300 p-3 rounded font-face shadow-md">
-          Set Reminder
-        </button>
+        <CreateTask wid={wid} />
       </div>
     </div>
   );

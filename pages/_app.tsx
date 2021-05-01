@@ -2,6 +2,7 @@ import "tailwindcss/tailwind.css";
 
 import "../styles/globals.css";
 
+import Head from "next/head";
 import { AppProps } from "next/app";
 
 import ProgressBar from "@badrap/bar-of-progress";
@@ -19,7 +20,16 @@ Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <div>
+      <Head>
+        <title>CoCreatr - Work Better.</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
+      <Component {...pageProps} />
+    </div>
+  );
 }
 
 export default MyApp;

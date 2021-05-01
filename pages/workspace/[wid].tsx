@@ -34,16 +34,16 @@ const Workspace = () => {
 
   return (
     <div>
+      {/* TODO: FIX THIS */}
       <Header user />
-      <SubHeader />
-      <div className="mx-14 my-6">
-        <CreateTask wid={wid} />
+      <SubHeader wid={wid} />
+      <div className="mx-14 mt-10">
         <h1 className="font-face text-2xl">Tasks: </h1>
       </div>
-      <div className="flex flex-row flex-wrap w-full">
+      <div className="flex flex-row flex-wrap w-full mx-10">
         {workspaceTasks
           ? workspaceTasks.map((task) => (
-              <div key={task.name} className="mx-5 my-2">
+              <div key={task.name} className="px-2 my-2">
                 <Task
                   name={task.name}
                   desc={task.taskDesc}
