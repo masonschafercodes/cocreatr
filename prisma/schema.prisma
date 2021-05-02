@@ -20,6 +20,7 @@ model Workspace {
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   creator     User?    @relation(fields: [creatorId], references: [id])
   tasks       Task[]
+  events      Event[]
   creatorId   Int?
 }
 
@@ -31,6 +32,18 @@ model Task {
   updatedAt   DateTime   @updatedAt @map(name: "updated_at")
   workspace   Workspace? @relation(fields: [workspaceId], references: [id])
   workspaceId Int?
+}
+
+model Event {
+  id           Int        @id @default(autoincrement())
+  name         String
+  eventDetails String
+  createdAt    DateTime   @default(now()) @map(name: "created_at")
+  updatedAt    DateTime   @updatedAt @map(name: "updated_at")
+  workspace    Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId  Int?
+
+  @@map(name: "events")
 }
 
 model User {
