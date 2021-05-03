@@ -5,15 +5,13 @@ import { useUser } from "../../lib/hooks";
 function MoreInfo() {
   const user = useUser({ redirectTo: "/" });
 
-  localStorage.setItem(
-    "user",
-    JSON.stringify({ user: user })
-  );
+  localStorage.setItem("user", JSON.stringify({ user: user }));
 
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [pictureLink, setPictureLink] = useState("");
   const [isNewUser, setIsNewUser] = useState<Boolean>();
 
   type userEmail = {
@@ -59,6 +57,7 @@ function MoreInfo() {
     const data = {
       name: name,
       email: email,
+      pictureLink: pictureLink,
     };
 
     if (email && name) {
@@ -114,6 +113,19 @@ function MoreInfo() {
                   placeholder="janedoe@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </label>
+              <label htmlFor="pictureLink" className="flex flex-col">
+                <span className="text-lg font-face my-3 text-gray-400 underline">
+                  Link to Profile Picture
+                </span>
+                <input
+                  type="text"
+                  className="bg-gray-200 rounded p-3 font-face focus:border-green-300"
+                  placeholder="http://www.google.com/images"
+                  value={pictureLink}
+                  onChange={(e) => setPictureLink(e.target.value)}
                   required
                 />
               </label>

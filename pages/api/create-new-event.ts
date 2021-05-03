@@ -2,6 +2,8 @@ import DBClient from "../../lib/prisma";
 
 const prisma = DBClient.getInstance().prisma;
 
+// TODO: Implement Create New Event on the Frontend
+
 export default async function handle(req, res) {
   const { wid, name, eventDetails } = req.body;
 
@@ -11,7 +13,7 @@ export default async function handle(req, res) {
     },
   });
 
-  const newTask = await prisma.event.create({
+  const newEvent = await prisma.event.create({
     data: {
       name: name,
       eventDetails: eventDetails,
@@ -19,7 +21,7 @@ export default async function handle(req, res) {
     },
   });
 
-  if (newTask) {
-    res.status(200).json(newTask);
+  if (newEvent) {
+    res.status(200).json(newEvent);
   }
 }

@@ -9,11 +9,6 @@ const SubHeader = ({ wid }) => {
         </button>
       </div>
       <div className="mx-4">
-        <button className="px-3 py-2 bg-green-400 hover:bg-green-500 my-3 font-face text-white rounded shadow-md">
-          Add New Note
-        </button>
-      </div>
-      <div className="mx-4">
         <CreateTask wid={wid} />
       </div>
     </div>

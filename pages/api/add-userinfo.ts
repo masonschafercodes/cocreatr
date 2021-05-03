@@ -5,12 +5,13 @@ const prisma = DBClient.getInstance().prisma;
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { name, email } = req.body;
+      const { name, email, pictureLink } = req.body;
       const user = await prisma.user.create({
         data: {
           email: email,
           name: name,
           isNewUser: false,
+          pictureLink: pictureLink,
         },
       });
 
@@ -22,11 +23,11 @@ export default async function handler(req, res) {
           title: "Test Workspace",
         },
       });
-      res.status(200).json({ done: true });
+      await res.status(200).json({ done: true });
     } catch (error) {
-      res.status(304).json({ error: error });
+      await res.status(304).json({ error: error });
     }
   } else {
-    res.send(403);
+    res.send(405);
   }
 }

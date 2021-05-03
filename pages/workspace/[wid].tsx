@@ -16,7 +16,7 @@ const Workspace = () => {
   const wid: widType = getLocalWid();
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/get-workspace-tasks", {
+    fetch("/api/get-workspace-tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,6 @@ const Workspace = () => {
 
   return (
     <div>
-      {/* TODO: FIX THIS */}
       <Header user={user} />
       <SubHeader wid={wid} />
       <div className="mx-14 mt-10">
