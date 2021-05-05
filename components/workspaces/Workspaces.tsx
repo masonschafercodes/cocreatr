@@ -1,59 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { useRouter } from "next/router";
+import { widContext } from "../../lib/widContext";
 
 export default function Workspaces({ user }) {
-  const [userWorkspaces, setUserWorkspaces] = useState([]);
-
-  type userEmail = {
-    email: String;
-  };
-
-  const getUserWorkspaceData = async () => {
-    const data: userEmail = {
-      email: user.email,
-    };
-
-    if (data) {
-      const res = await fetch("/api/get-workspaces", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((jsonData) => {
-          return jsonData;
-        })
-        .then((jsonStr) => {
-          const userWorkspaceData = jsonStr;
-          setUserWorkspaces(userWorkspaceData["workspaces"]);
-          console.log(userWorkspaceData["workspaces"]);
-        })
-        .catch((err) => console.error(err));
-    }
-  };
-
-  useEffect(() => {
-    getUserWorkspaceData();
-  }, []);
-
   const router = useRouter();
-
-  userWorkspaces.map((data) => {
-    localStorage.setItem(
-      "workspaceId",
-      JSON.stringify({ wid: data.workspaceId })
-    );
-  });
+  const { workspace } = useContext(widContext);
 
   return (
     <div>
-      {userWorkspaces
-        ? userWorkspaces.map((data) => (
+      {workspace
+        ? workspace.workspaces.map((data) => (
             <div key={data.id}>
               <div className="bg-gray-100 m-12 p-10 rounded-lg">
                 <button

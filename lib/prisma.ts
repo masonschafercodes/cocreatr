@@ -1,18 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
-class DBClient {
-  public prisma: PrismaClient;
-  private static instance: DBClient;
-  private constructor() {
-    this.prisma = new PrismaClient();
-  }
-
-  public static getInstance = () => {
-    if (!DBClient.instance) {
-      DBClient.instance = new DBClient();
-    }
-    return DBClient.instance;
-  };
+// add prisma to the NodeJS global type
+interface CustomNodeJsGlobal extends NodeJS.Global {
+  prisma: PrismaClient;
 }
 
-export default DBClient;
+// Prevent multiple instances of Prisma Client in development
+declare const global: CustomNodeJsGlobal;
+
+const prisma = global.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV === "development") global.prisma = prisma;
+
+export default prisma;

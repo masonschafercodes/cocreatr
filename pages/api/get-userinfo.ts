@@ -1,8 +1,6 @@
-import DBClient from "../../lib/prisma";
+import prisma from "../../lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { User } from "../../@types/User";
-
-const prisma = DBClient.getInstance().prisma;
 
 export default async function handler(
   req: NextApiRequest,

@@ -28,9 +28,11 @@ model Task {
   id          Int        @id @default(autoincrement())
   name        String
   taskDesc    String
-  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  createdAt   DateTime   @default(now()) @map(name: "created_at") @db.Date
   updatedAt   DateTime   @updatedAt @map(name: "updated_at")
   workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  creator     User?      @relation(fields: [creatorId], references: [id])
+  creatorId   Int?
   workspaceId Int?
 }
 
@@ -38,7 +40,7 @@ model Event {
   id           Int        @id @default(autoincrement())
   name         String
   eventDetails String
-  createdAt    DateTime   @default(now()) @map(name: "created_at")
+  createdAt    DateTime   @default(now()) @map(name: "created_at") @db.Date
   updatedAt    DateTime   @updatedAt @map(name: "updated_at")
   workspace    Workspace? @relation(fields: [workspaceId], references: [id])
   workspaceId  Int?
@@ -54,6 +56,7 @@ model User {
   createdAt   DateTime    @default(now()) @map(name: "created_at")
   updatedAt   DateTime    @updatedAt @map(name: "updated_at")
   workspaces  Workspace[]
+  tasks       Task[]
   isNewUser   Boolean     @default(true)
 
   @@map(name: "users")

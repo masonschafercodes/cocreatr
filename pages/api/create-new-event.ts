@@ -1,6 +1,4 @@
-import DBClient from "../../lib/prisma";
-
-const prisma = DBClient.getInstance().prisma;
+import prisma from "../../lib/prisma";
 
 // TODO: Implement Create New Event on the Frontend
 

@@ -1,6 +1,4 @@
-import DBClient from "../../lib/prisma";
-
-const prisma = DBClient.getInstance().prisma;
+import prisma from "../../lib/prisma";
 
 export default async function handle(req, res) {
   const { wid } = req.body;
@@ -15,6 +13,8 @@ export default async function handle(req, res) {
           name: true,
           taskDesc: true,
           createdAt: true,
+          id: true,
+          creator: true,
         },
         orderBy: {
           createdAt: "desc",

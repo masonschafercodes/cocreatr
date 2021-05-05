@@ -1,17 +1,16 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useUser } from "../../lib/hooks";
+import { useContext, useEffect, useState } from "react";
+import { userContext } from "../../lib/userContext";
 
 function MoreInfo() {
-  const user = useUser({ redirectTo: "/" });
-
-  localStorage.setItem("user", JSON.stringify({ user: user }));
+  const user = useContext(userContext);
 
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pictureLink, setPictureLink] = useState("");
+  const [workspaceName, setworkspaceName] = useState("");
   const [isNewUser, setIsNewUser] = useState<Boolean>();
 
   type userEmail = {
@@ -41,7 +40,6 @@ function MoreInfo() {
           const isUserNew = jsonStr.isNewUser;
           setIsNewUser(isUserNew);
           if (!isUserNew) return router.push("/dashboard");
-          console.log(jsonStr);
         })
         .catch((err) => console.error(err));
     }
@@ -58,6 +56,7 @@ function MoreInfo() {
       name: name,
       email: email,
       pictureLink: pictureLink,
+      worspaceName: workspaceName,
     };
 
     if (email && name) {
@@ -91,7 +90,7 @@ function MoreInfo() {
           <div className="w-1/3">
             <form onSubmit={handleSubmit}>
               <label htmlFor="name" className="flex flex-col">
-                <span className="text-lg font-face my-3 text-gray-400 underline">
+                <span className="text-lg font-face my-3 text-gray-400 ">
                   Name
                 </span>
                 <input
@@ -104,7 +103,7 @@ function MoreInfo() {
                 />
               </label>
               <label htmlFor="email" className="flex flex-col">
-                <span className="text-lg font-face my-3 text-gray-400 underline">
+                <span className="text-lg font-face my-3 text-gray-400 ">
                   Email
                 </span>
                 <input
@@ -117,7 +116,7 @@ function MoreInfo() {
                 />
               </label>
               <label htmlFor="pictureLink" className="flex flex-col">
-                <span className="text-lg font-face my-3 text-gray-400 underline">
+                <span className="text-lg font-face my-3 text-gray-400 ">
                   Link to Profile Picture
                 </span>
                 <input
@@ -129,7 +128,23 @@ function MoreInfo() {
                   required
                 />
               </label>
-              {name && email ? (
+              <div className="flex items-center justify-center my-12">
+                <hr className="w-1/2 inline-block align-middle" />
+              </div>
+              <label htmlFor="pictureLink" className="flex flex-col">
+                <span className="text-lg pb-3 font-face text-gray-400 ">
+                  Name for your first Workspace
+                </span>
+                <input
+                  type="text"
+                  className="bg-gray-200 rounded p-3 font-face focus:border-green-300"
+                  placeholder="A Cool Workspace Name"
+                  value={workspaceName}
+                  onChange={(e) => setworkspaceName(e.target.value)}
+                  required
+                />
+              </label>
+              {name && email && pictureLink ? (
                 <button
                   type="submit"
                   className="mt-5 w-full transition duration-200 ease-in bg-green-400 hover:bg-green-500 text-white font-face font-bold p-2 rounded shadow-lg"

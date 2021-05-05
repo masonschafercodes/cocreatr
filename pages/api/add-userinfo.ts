@@ -1,11 +1,9 @@
-import DBClient from "../../lib/prisma";
-
-const prisma = DBClient.getInstance().prisma;
+import prisma from "../../lib/prisma";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { name, email, pictureLink } = req.body;
+      const { name, email, pictureLink, worspaceName } = req.body;
       const user = await prisma.user.create({
         data: {
           email: email,
@@ -20,7 +18,8 @@ export default async function handler(req, res) {
         data: {
           creatorId: user.id,
           active: true,
-          title: "Test Workspace",
+          title: worspaceName,
+          description: "This is a your first workspace, you get it for free!",
         },
       });
       await res.status(200).json({ done: true });

@@ -1,58 +1,118 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Task from "../../components/task/Task";
 import Header from "../../components/header/Header";
 import SubHeader from "../../components/subHeader/SubHeader";
+import TaskGraph from "../../components/taskGraph/TaskGraph";
 
-import getLocalWid from "../../lib/getLocalWid";
-import getLocalUser from "../../lib/getLocalUser";
+import { userContext } from "../../lib/userContext";
+import { widContext } from "../../lib/widContext";
+import { useRouter } from "next/router";
 
 const Workspace = () => {
-  const user = getLocalUser();
   const [workspaceTasks, setWorkspaceTasks] = useState([]);
+  const [taskGraphData, setTaskGraphData] = useState([]);
+  const { workspace } = useContext(widContext);
+  const user = useContext(userContext);
 
-  interface widType {
-    wid: string;
+  const router = useRouter();
+  const { wid } = router.query;
+
+  function formatTime(time) {
+    let ttf = new Date(time);
+    return ttf.toLocaleDateString();
   }
-  const wid: widType = getLocalWid();
 
   useEffect(() => {
-    fetch("/api/get-workspace-tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(wid),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setWorkspaceTasks(data.tasks);
+    async function init(wid) {
+      try {
+        await fetch("/api/get-workspace-tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wid: wid,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setWorkspaceTasks(data.tasks);
+          });
+      } catch (error) {
+        //ehhh
+      }
+    }
+    init(wid);
+  }, [workspace]);
+
+  useEffect(() => {
+    async function init(wid) {
+      try {
+        await fetch("/api/count-tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wid: wid,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setTaskGraphData(data);
+          });
+      } catch (error) {
+        //rhhh
+      }
+    }
+    init(wid);
+  }, [workspace]);
+
+  let dataToSend = [];
+  taskGraphData &&
+    taskGraphData.map((taskData) => {
+      dataToSend.push({
+        time: formatTime(taskData.createdAt),
+        count: taskData.count.name,
       });
-  }, []);
+    });
 
   return (
     <div>
       <Header user={user} />
       <SubHeader wid={wid} />
-      <div className="mx-14 mt-10">
-        <h1 className="font-face text-2xl">Tasks: </h1>
-      </div>
-      <div className="flex flex-row flex-wrap w-full px-10">
-        {workspaceTasks
-          ? workspaceTasks.map((task) => (
-              <div key={task.name} className="px-2 my-2">
-                <Task
-                  name={task.name}
-                  desc={task.taskDesc}
-                  addedAt={task.createdAt}
-                />
-              </div>
-            ))
-          : null}
+      <div className="flex flex-col px-16 py-6">
+        <Task
+          workspaceTasks={workspaceTasks ? workspaceTasks : []}
+          user={user}
+        />
+        {dataToSend.length !== 0 ? (
+          <div className="shadow-xl mt-5 p-5 rounded-xl">
+            <h1 className="text-xl font-semibold font-face text-gray-500 bg-gray-100 p-6 rounded-xl">
+              Tasks Created Per Day
+            </h1>
+            <TaskGraph data={dataToSend} />
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
 };
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const res = await fetch("http://localhost:3000/api/user");
+//   const sessionUser: userSessionType = await res.json();
+//   return {
+//     props: {
+//       sessionUser,
+//     },
+//   };
+// };
 
 export default Workspace;

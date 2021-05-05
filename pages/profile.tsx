@@ -1,9 +1,10 @@
+import { useContext } from "react";
 import Header from "../components/header/Header";
 import MoreInfo from "../components/moreInfo/moreInfo";
-import { useUser } from "../lib/hooks";
+import { userContext } from "../lib/userContext";
 
 function Profile() {
-  const user = useUser({ redirectTo: "/" });
+  const user = useContext(userContext);
 
   return (
     <div>

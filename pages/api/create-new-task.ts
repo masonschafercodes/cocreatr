@@ -1,13 +1,18 @@
-import DBClient from "../../lib/prisma";
-
-const prisma = DBClient.getInstance().prisma;
+import prisma from "../../lib/prisma";
 
 export default async function handle(req, res) {
-  const { wid, name, taskDesc } = req.body;
+  const { wid, name, taskDesc, email } = req.body;
+  console.log(req.body);
 
   const workspace = await prisma.workspace.findUnique({
     where: {
-      workspaceId: wid["wid"],
+      workspaceId: wid,
+    },
+  });
+
+  const creator = await prisma.user.findUnique({
+    where: {
+      email: email,
     },
   });
 
@@ -16,6 +21,7 @@ export default async function handle(req, res) {
       name: name,
       taskDesc: taskDesc,
       workspaceId: workspace.id,
+      creatorId: creator.id,
     },
   });
 

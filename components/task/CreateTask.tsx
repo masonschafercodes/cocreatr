@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CreateTask({ wid }) {
+export default function CreateTask({ wid, user }) {
   const [showModal, setShowModal] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
@@ -12,6 +12,7 @@ export default function CreateTask({ wid }) {
       name: taskName,
       taskDesc: taskDesc,
       wid: wid,
+      email: user.email,
     };
 
     if (data) {
@@ -25,7 +26,6 @@ export default function CreateTask({ wid }) {
         });
         if (res.status === 200 && window !== undefined) {
           window.location.reload();
-          // console.log(res.json());
         } else {
           throw new Error(await res.text());
         }
@@ -86,9 +86,12 @@ export default function CreateTask({ wid }) {
             >
               Dismiss
             </button>
-              <button className="py-3.5 w-full sm:mt-0 mt-2 sm:ml-2 leading-3 text-white focus:outline-none hover:opacity-90 text-sm font-semibold border rounded border-green-600 bg-green-500" onClick={(e) => handleSubmit(e)}> 
-                Add Task
-              </button>
+            <button
+              className="py-3.5 w-full sm:mt-0 mt-2 sm:ml-2 leading-3 text-white focus:outline-none hover:opacity-90 text-sm font-semibold border rounded border-green-600 bg-green-500"
+              onClick={(e) => handleSubmit(e)}
+            >
+              Add Task
+            </button>
           </div>
         </div>
       </div>
