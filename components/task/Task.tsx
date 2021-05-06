@@ -99,7 +99,7 @@ export default function Task({ workspaceTasks, user }) {
                           </td>
                           <td>
                             {user && task.creator.email === user.email ? (
-                              <td className="flex items-center justify-center">
+                              <tr className="flex items-center justify-center">
                                 {task.isCompleted ? (
                                   <svg
                                     width={20}
@@ -133,7 +133,7 @@ export default function Task({ workspaceTasks, user }) {
                                     />
                                   </svg>
                                 )}
-                              </td>
+                              </tr>
                             ) : null}
                           </td>
                         </tr>
