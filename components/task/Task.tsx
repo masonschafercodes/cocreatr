@@ -4,27 +4,6 @@ export default function Task({ workspaceTasks, user }) {
     return ttf.toLocaleDateString();
   }
 
-  async function deleteTask(taskId: number, e: React.SyntheticEvent) {
-    e.preventDefault();
-    const data = {
-      id: taskId,
-    };
-    try {
-      const res = await fetch("/api/delete-task", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }).then((res) => {
-        return res.json();
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   async function updateTask(taskId: number, e: React.SyntheticEvent) {
     e.preventDefault();
     const data = {
@@ -73,9 +52,6 @@ export default function Task({ workspaceTasks, user }) {
                     >
                       Added At
                     </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Delete</span>
-                    </th>
                     <th
                       scope="col"
                       className="px-5 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -121,54 +97,44 @@ export default function Task({ workspaceTasks, user }) {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {formatTime(task.createdAt)}
                           </td>
-                          {user && task.creator.email === user.email ? (
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <button
-                                className="text-red-600 hover:text-red-900"
-                                onClick={(e) => deleteTask(task.id, e)}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          ) : null}
                           <td>
-                            {task.isCompleted ? (
+                            {user && task.creator.email === user.email ? (
                               <td className="flex items-center justify-center">
-                                <svg
-                                  width={15}
-                                  height={15}
-                                  viewBox="0 0 15 15"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M3 3h9v9H3V3zM2 3a1 1 0 011-1h9a1 1 0 011 1v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm8.35 2.511a.5.5 0 00-.825-.566L6.64 9.15l-1.443-1.74a.5.5 0 00-.77.638l1.866 2.25a.5.5 0 00.797-.037l3.26-4.749z"
-                                    fill="#0fb881"
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
+                                {task.isCompleted ? (
+                                  <svg
+                                    width={20}
+                                    height={20}
+                                    viewBox="0 0 15 15"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M3 3h9v9H3V3zM2 3a1 1 0 011-1h9a1 1 0 011 1v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm8.35 2.511a.5.5 0 00-.825-.566L6.64 9.15l-1.443-1.74a.5.5 0 00-.77.638l1.866 2.25a.5.5 0 00.797-.037l3.26-4.749z"
+                                      fill="#0fb881"
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                ) : (
+                                  <svg
+                                    width={20}
+                                    height={20}
+                                    viewBox="0 0 15 15"
+                                    fill="none"
+                                    className="cursor-pointer"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    onClick={(e) => updateTask(task.id, e)}
+                                  >
+                                    <path
+                                      d="M12.5 2h-10a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h10a.5.5 0 00.5-.5v-10a.5.5 0 00-.5-.5zm-10-1A1.5 1.5 0 001 2.5v10A1.5 1.5 0 002.5 14h10a1.5 1.5 0 001.5-1.5v-10A1.5 1.5 0 0012.5 1h-10z"
+                                      fill="currentColor"
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                )}
                               </td>
-                            ) : (
-                              <td className="flex items-center justify-center">
-                                <svg
-                                  width={15}
-                                  height={15}
-                                  viewBox="0 0 15 15"
-                                  fill="none"
-                                  className="cursor-pointer"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  onClick={(e) => updateTask(task.id, e)}
-                                >
-                                  <path
-                                    d="M12.5 2h-10a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h10a.5.5 0 00.5-.5v-10a.5.5 0 00-.5-.5zm-10-1A1.5 1.5 0 001 2.5v10A1.5 1.5 0 002.5 14h10a1.5 1.5 0 001.5-1.5v-10A1.5 1.5 0 0012.5 1h-10z"
-                                    fill="currentColor"
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </td>
-                            )}
+                            ) : null}
                           </td>
                         </tr>
                       ))
