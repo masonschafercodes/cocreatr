@@ -39,7 +39,7 @@ export default function CreateTask({ wid, user }) {
     <div>
       <button
         onClick={() => setShowModal(true)}
-        className="px-3 py-2 bg-green-400 hover:bg-green-500 my-3 font-face text-white rounded"
+        className="opacity-70 px-3 py-2 bg-green-400 hover:bg-green-500 my-3 font-face text-white rounded shadow-md"
       >
         Add New Task
       </button>

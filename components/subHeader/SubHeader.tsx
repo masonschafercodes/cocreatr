@@ -7,14 +7,14 @@ const SubHeader = ({ wid }) => {
   const user = useContext(userContext);
   const router = useRouter();
   return (
-    <div className="flex items-center justify-start  bg-gray-100 rounded p-4 mx-16 shadow-lg">
+    <div className="flex items-center justify-start rounded p-4 mx-16">
       <div className="mx-4">
         <CreateTask wid={wid} user={user} />
       </div>
       <div className="mx-4">
         <div className="flex flex-row">
           <button
-            className="disabled:opacity-30 px-3 py-2 bg-blue-400 hover:bg-blue-500 my-3 font-face text-white rounded shadow-md"
+            className="opacity-70 px-3 py-2 bg-blue-400 hover:bg-blue-500 my-3 font-face text-white rounded shadow-md"
             onClick={(e) => {
               e.preventDefault();
               navigator.clipboard.writeText(
@@ -40,7 +40,7 @@ const SubHeader = ({ wid }) => {
       </div>
       <div className="ml-auto">
         <button
-          className="px-3 py-2 bg-red-400 hover:bg-red-500 my-3 font-face text-white rounded shadow-md"
+          className="opacity-70 px-3 py-2 bg-red-400 hover:bg-red-500 my-3 font-face text-white rounded shadow-md"
           onClick={() => router.push("/dashboard")}
         >
           Back to Dashboard
