@@ -12,9 +12,7 @@ function Dashboard() {
         <div>
           <Header user={user} />
           <div className="m-12">
-            <h1 className="text-2xl font-face text-gray-400">
-              Your Workspaces
-            </h1>
+            <h1 className="text-2xl font-face text-gray-400">Your Workspace</h1>
           </div>
           <div>
             <Workspaces user={user} />
@@ -23,6 +21,9 @@ function Dashboard() {
             <h1 className="text-2xl font-face text-gray-400">
               Shared Workspaces
             </h1>
+            <p className="mt-4 italic text-gray-300">
+              This feature is currently in development
+            </p>
           </div>
         </div>
       )}

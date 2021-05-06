@@ -23,7 +23,7 @@ export default function Workspaces({ user }) {
                   }}
                 >
                   {data.title}
-                  <span> &rarr;</span>
+                  <span className="text-gray-400"> &rarr;</span>
                 </button>
                 {data.description ? (
                   <div>

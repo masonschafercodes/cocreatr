@@ -15,9 +15,7 @@ export default async function handle(req, res) {
           createdAt: true,
           id: true,
           creator: true,
-        },
-        orderBy: {
-          createdAt: "desc",
+          isCompleted: true,
         },
       },
     },

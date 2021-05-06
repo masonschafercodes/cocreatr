@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 const Workspace = () => {
   const [workspaceTasks, setWorkspaceTasks] = useState([]);
   const [taskGraphData, setTaskGraphData] = useState([]);
+  const [completedGraphData, setCompletedGraphData] = useState([]);
   const { workspace } = useContext(widContext);
   const user = useContext(userContext);
 
@@ -72,10 +73,44 @@ const Workspace = () => {
     init(wid);
   }, [workspace]);
 
+  useEffect(() => {
+    async function init(wid) {
+      try {
+        await fetch("/api/count-completed", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wid: wid,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setCompletedGraphData(data);
+          });
+      } catch (error) {
+        //rhhh
+      }
+    }
+    init(wid);
+  }, [workspace]);
+
   let dataToSend = [];
   taskGraphData &&
     taskGraphData.map((taskData) => {
       dataToSend.push({
+        time: formatTime(taskData.createdAt),
+        count: taskData.count.name,
+      });
+    });
+
+  let completedDataToSend = [];
+  completedGraphData &&
+    completedGraphData.map((taskData) => {
+      completedDataToSend.push({
         time: formatTime(taskData.createdAt),
         count: taskData.count.name,
       });
@@ -96,6 +131,16 @@ const Workspace = () => {
               Tasks Created Per Day
             </h1>
             <TaskGraph data={dataToSend} />
+          </div>
+        ) : (
+          <div></div>
+        )}
+        {completedDataToSend.length !== 0 ? (
+          <div className="shadow-xl mt-5 p-5 rounded-xl">
+            <h1 className="text-xl font-semibold font-face text-gray-500 bg-gray-100 p-6 rounded-xl">
+              Tasks Completed Per Day
+            </h1>
+            <TaskGraph data={completedDataToSend} />
           </div>
         ) : (
           <div></div>
