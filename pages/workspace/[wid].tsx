@@ -7,9 +7,10 @@ import TaskGraph from "../../components/taskGraph/TaskGraph";
 import { userContext } from "../../lib/userContext";
 import { widContext } from "../../lib/widContext";
 import { useRouter } from "next/router";
+import { taskContext } from "../../lib/taskContext";
 
 const Workspace = () => {
-  const [workspaceTasks, setWorkspaceTasks] = useState([]);
+  const { tasks, setTasks } = useContext(taskContext);
   const [taskGraphData, setTaskGraphData] = useState([]);
   const [completedGraphData, setCompletedGraphData] = useState([]);
   const { workspace } = useContext(widContext);
@@ -39,7 +40,7 @@ const Workspace = () => {
             return res.json();
           })
           .then((data) => {
-            setWorkspaceTasks(data.tasks);
+            setTasks(data.tasks);
           });
       } catch (error) {
         //ehhh
@@ -121,10 +122,7 @@ const Workspace = () => {
       <Header user={user} />
       <SubHeader wid={wid} />
       <div className="flex flex-col px-16 py-6">
-        <Task
-          workspaceTasks={workspaceTasks ? workspaceTasks : []}
-          user={user}
-        />
+        <Task workspaceTasks={tasks ? tasks : []} user={user} wid={wid} />
         {dataToSend.length !== 0 ? (
           <div className="shadow-xl mt-5 p-5 rounded-xl">
             <h1 className="text-xl font-semibold font-face text-gray-500 bg-gray-100 p-6 rounded-xl">

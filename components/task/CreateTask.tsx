@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { taskContext } from "../../lib/taskContext";
 
 export default function CreateTask({ wid, user }) {
   const [showModal, setShowModal] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
+
+  const { tasks, setTasks } = useContext(taskContext);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -23,12 +26,14 @@ export default function CreateTask({ wid, user }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        });
-        if (res.status === 200 && window !== undefined) {
-          window.location.reload();
-        } else {
-          throw new Error(await res.text());
-        }
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setTasks(data.tasks);
+            setShowModal(false);
+          });
       } catch (error) {
         console.error(error);
       }

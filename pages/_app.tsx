@@ -7,6 +7,8 @@ import { userContext } from "../lib/userContext";
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../lib/hooks";
 import { widContext } from "../lib/widContext";
+import { taskContext } from "../lib/taskContext";
+import axios from "axios";
 
 const progress = new ProgressBar({
   size: 2,
@@ -22,30 +24,31 @@ Router.events.on("routeChangeError", progress.finish);
 function MyApp({ Component, pageProps }) {
   const user = useUser({ redirectTo: "/" });
   const [workspace, setWorkspace] = useState();
+  const [tasks, setTasks] = useState([]);
 
   const workspaceProvider = useMemo(() => ({ workspace, setWorkspace }), [
     workspace,
     setWorkspace,
   ]);
 
+  const tasksProvider = useMemo(() => ({ tasks, setTasks }), [tasks, setTasks]);
+
   useEffect(() => {
-    async function init(data) {
-      await fetch("/api/get-workspaces", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data ? { email: data.email } : { email: "" }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setWorkspace(data);
-        })
-        .catch((err) => console.error(err));
-    }
-    init(user);
+    const init = async (user) => {
+      const res = await axios.post("/api/get-workspaces", {
+        email: user ? user.email : "",
+      });
+      const resData = res.data;
+
+      if (resData) {
+        setWorkspace(resData);
+      }
+    };
+    const timer = setTimeout(() => {
+      init(user);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [user]);
 
   return (
@@ -57,7 +60,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <userContext.Provider value={user}>
         <widContext.Provider value={workspaceProvider}>
-          <Component {...pageProps} />
+          <taskContext.Provider value={tasksProvider}>
+            <Component {...pageProps} />
+          </taskContext.Provider>
         </widContext.Provider>
       </userContext.Provider>
     </div>

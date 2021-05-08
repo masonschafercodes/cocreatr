@@ -25,8 +25,26 @@ export default async function handle(req, res) {
         },
       });
 
+      const tasks = await prisma.workspace.findUnique({
+        where: {
+          workspaceId: wid,
+        },
+        select: {
+          tasks: {
+            select: {
+              name: true,
+              taskDesc: true,
+              createdAt: true,
+              id: true,
+              creator: true,
+              isCompleted: true,
+            },
+          },
+        },
+      });
+
       if (newTask) {
-        res.status(200).json(newTask);
+        res.status(200).json(tasks);
       } else {
         res.status(500).json({ message: "new task was not created" });
       }

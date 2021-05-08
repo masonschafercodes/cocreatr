@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma";
 
 export default async function handle(req, res) {
-  const { id } = req.body;
+  const { id, wid } = req.body;
 
   const taskToDelete = await prisma.task.update({
     where: {
@@ -12,7 +12,25 @@ export default async function handle(req, res) {
     },
   });
 
+  const tasks = await prisma.workspace.findUnique({
+    where: {
+      workspaceId: wid,
+    },
+    select: {
+      tasks: {
+        select: {
+          name: true,
+          taskDesc: true,
+          createdAt: true,
+          id: true,
+          creator: true,
+          isCompleted: true,
+        },
+      },
+    },
+  });
+
   if (taskToDelete) {
-    res.status(200).json(taskToDelete);
+    res.status(200).json(tasks);
   }
 }

@@ -1,4 +1,9 @@
-export default function Task({ workspaceTasks, user }) {
+import { taskContext } from "../../lib/taskContext";
+import { useContext } from "react";
+
+export default function Task({ workspaceTasks: tasks, user, wid }) {
+  const { setTasks } = useContext(taskContext);
+
   function formatTime(time: string): string {
     let ttf = new Date(time);
     return ttf.toLocaleDateString();
@@ -8,6 +13,7 @@ export default function Task({ workspaceTasks, user }) {
     e.preventDefault();
     const data = {
       id: taskId,
+      wid: wid,
     };
     try {
       const res = await fetch("/api/mark-task-complete", {
@@ -16,10 +22,13 @@ export default function Task({ workspaceTasks, user }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }).then((res) => {
-        return res.json();
-      });
-      window.location.reload();
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setTasks(data.tasks);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -27,7 +36,7 @@ export default function Task({ workspaceTasks, user }) {
 
   return (
     <div className="flex flex-col">
-      {workspaceTasks.length != 0 ? (
+      {tasks.length != 0 ? (
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -61,8 +70,8 @@ export default function Task({ workspaceTasks, user }) {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {workspaceTasks
-                    ? workspaceTasks.map((task) => (
+                  {tasks
+                    ? tasks.map((task) => (
                         <tr key={task.id}>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">

@@ -29,6 +29,6 @@ export default async function handle(req, res) {
       console.error(e);
     }
   } else {
-    res.status(500).json({ message: "email not provided" });
+    res.json({ sent_in: req.body, message: "email not provided" });
   }
 }
