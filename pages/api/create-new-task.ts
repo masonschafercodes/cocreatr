@@ -39,6 +39,9 @@ export default async function handle(req, res) {
               creator: true,
               isCompleted: true,
             },
+            orderBy: {
+              isCompleted: "desc",
+            },
           },
         },
       });

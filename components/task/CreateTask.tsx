@@ -6,7 +6,7 @@ export default function CreateTask({ wid, user }) {
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
 
-  const { tasks, setTasks } = useContext(taskContext);
+  const { setTasks } = useContext(taskContext);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -33,6 +33,8 @@ export default function CreateTask({ wid, user }) {
           .then((data) => {
             setTasks(data.tasks);
             setShowModal(false);
+            setTaskDesc("");
+            setTaskName("");
           });
       } catch (error) {
         console.error(error);
