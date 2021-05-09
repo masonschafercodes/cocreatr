@@ -18,7 +18,7 @@ const SubHeader = ({ wid }) => {
             onClick={(e) => {
               e.preventDefault();
               navigator.clipboard.writeText(
-                `http://localhost:3000/workspace/${wid}`
+                `https://cocreatr.vercel.app/workspace/${wid}`
               );
             }}
           >
